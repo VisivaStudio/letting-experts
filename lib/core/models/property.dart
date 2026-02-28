@@ -41,24 +41,34 @@ class Property {
     final media = json['listing_media'] as List?;
     final images = media?.map((m) => m['url'].toString()).toList() ?? [];
     
+    // Safely parse rent and coords
+    final rentValue = json['rent'];
+    final double rent = rentValue is num ? rentValue.toDouble() : (double.tryParse(rentValue?.toString() ?? '0.0') ?? 0.0);
+    
+    final latValue = json['lat'];
+    final double? lat = latValue is num ? latValue.toDouble() : double.tryParse(latValue?.toString() ?? '');
+    
+    final lngValue = json['lng'];
+    final double? lng = lngValue is num ? lngValue.toDouble() : double.tryParse(lngValue?.toString() ?? '');
+
     return Property(
-      id: json['id'].toString(),
+      id: json['id']?.toString() ?? '0',
       title: json['title'] ?? 'N/A',
       description: json['description'] ?? '',
-      type: json['property_type'] ?? 'Apartment',
-      rent: (json['rent'] as num?)?.toDouble() ?? 0.0,
+      type: json['property_type'] ?? 'house',
+      rent: rent,
       location: json['location'] ?? 'Unknown',
       bedrooms: json['bedrooms'] ?? 0,
       bathrooms: json['bathrooms'] ?? 0,
       parking: json['parking'] ?? 0,
       image: images.isNotEmpty ? images.first : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80',
       images: images,
-      isFeatured: json['is_featured'] ?? false,
+      isFeatured: json['is_featured'] == true,
       agent: json['agent'] ?? 'Letting Experts',
       address: json['address'],
       availableFrom: json['available_from'] != null ? DateTime.tryParse(json['available_from']) : null,
-      lat: json['lat']?.toDouble(),
-      lng: json['lng']?.toDouble(),
+      lat: lat,
+      lng: lng,
     );
   }
 }

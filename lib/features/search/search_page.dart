@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../messaging/messaging_view.dart';
 import '../../core/models/property.dart';
-import '../../core/repositories/listing_repository.dart';
-import '../property/property_details_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -33,7 +32,7 @@ class _SearchPageState extends State<SearchPage> {
         children: const [
           ExploreView(),
           PlaceholderView(title: 'Saved Properties', icon: Icons.favorite),
-          PlaceholderView(title: 'Messages', icon: Icons.chat_bubble),
+          MessagingView(),
           PlaceholderView(title: 'Profile', icon: Icons.person),
         ],
       ),
@@ -576,7 +575,13 @@ class _ExploreViewState extends ConsumerState<ExploreView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)), child: Image.asset('assets/images/logo_primary.png', height: 60, fit: BoxFit.contain, errorBuilder: (c, e, s) => const Icon(Icons.apartment, color: Color(0xFFCE3132), size: 40))),
-                            Row(children: [_buildHeaderIconButton(Icons.facebook, () => _launchURL('https://www.facebook.com/LettingExperts/')), const SizedBox(width: 8), _buildHeaderIconButton(Icons.language, () => _launchURL('https://lettingexperts.co.za'))]),
+                            Row(children: [
+                              _buildHeaderIconButton(Icons.refresh, () => ref.invalidate(listingsProvider)),
+                              const SizedBox(width: 8),
+                              _buildHeaderIconButton(Icons.facebook, () => _launchURL('https://www.facebook.com/LettingExperts/')), 
+                              const SizedBox(width: 8), 
+                              _buildHeaderIconButton(Icons.language, () => _launchURL('https://lettingexperts.co.za'))
+                            ]),
                           ],
                         ),
                         const Spacer(),
@@ -596,17 +601,41 @@ class _ExploreViewState extends ConsumerState<ExploreView> {
                           borderRadius: BorderRadius.circular(24),
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                            child: Container(
-                              height: 65,
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(color: Colors.black.withAlpha(120), borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withAlpha(40), width: 1)),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.search, color: Colors.white, size: 28),
-                                  const SizedBox(width: 16),
-                                  Expanded(child: TextField(style: const TextStyle(color: Colors.white, fontSize: 16), decoration: const InputDecoration(hintText: 'Where to next?', hintStyle: TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.w500), border: InputBorder.none), onSubmitted: (v) => _launchURL('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(v)}'))),
-                                  Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: const Color(0xFFCE3132), borderRadius: BorderRadius.circular(16)), child: const Icon(Icons.tune, color: Colors.white, size: 24)),
-                                ],
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Container(
+                                height: 65,
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withAlpha(120),
+                                  borderRadius: BorderRadius.circular(24),
+                                  border: Border.all(color: Colors.white.withAlpha(40), width: 1),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.search, color: Colors.white, size: 28),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: TextField(
+                                        style: const TextStyle(color: Colors.white, fontSize: 16),
+                                        cursorColor: const Color(0xFFCE3132),
+                                        decoration: const InputDecoration(
+                                          hintText: 'Where to next?',
+                                          hintStyle: TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.w500),
+                                          border: InputBorder.none,
+                                          isDense: true,
+                                          contentPadding: EdgeInsets.symmetric(vertical: 12),
+                                        ),
+                                        onSubmitted: (v) => _launchURL('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(v)}'),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(color: const Color(0xFFCE3132), borderRadius: BorderRadius.circular(16)),
+                                      child: const Icon(Icons.tune, color: Colors.white, size: 24),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
