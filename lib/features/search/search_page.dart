@@ -454,12 +454,26 @@ class _ExploreViewState extends ConsumerState<ExploreView> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundImage: imagePath.startsWith('http') ? CachedNetworkImageProvider(imagePath) : AssetImage(imagePath) as ImageProvider,
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFCE3132).withAlpha(80), width: 1.5),
+            ),
+            child: ClipOval(
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: const Color(0xFF1C1C1C),
+                  child: const Icon(Icons.person, color: Color(0xFFCE3132), size: 24),
+                ),
+              ),
+            ),
           ),
-          const SizedBox(width: 12),
-          Text(name, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500)),
+          const SizedBox(width: 16),
+          Text(name, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
         ],
       ),
     );
