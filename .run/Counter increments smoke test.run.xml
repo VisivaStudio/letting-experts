@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Counter increments smoke test" type="FlutterTestConfigType" factoryName="Flutter Test" singleton="false" nameIsGenerated="true">
+    <option name="testName" value="Counter increments smoke test" />
+    <option name="testFile" value="$PROJECT_DIR$/test/widget_test.dart" />
+    <option name="useRegexp" value="false" />
+    <option name="additionalArgs" value="" />
+    <method v="2" />
+  </configuration>
+</component>

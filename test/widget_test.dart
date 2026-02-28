@@ -11,10 +11,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:letting_experts/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Counter increments smoke test', (WidgetTester tester) {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
-
+    await tester.pumpWidget(Builder(
+      builder: (context) => const LettingExpertsApp()
+    ));
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsNothing);
