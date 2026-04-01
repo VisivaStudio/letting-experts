@@ -17,7 +17,7 @@ class ListingRepository {
           .eq('is_active', true)
           .order('created_at', ascending: false);
 
-      print('DEBUG: Supabase Response received. Row count: ${response is List ? response.length : 0}');
+      print('DEBUG: Supabase Response received. Row count: ${response.length}');
       
       final props = (response as List).map((data) {
         final area = data['areas'] as Map<String, dynamic>?;

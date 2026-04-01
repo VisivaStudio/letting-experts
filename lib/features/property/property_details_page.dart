@@ -263,7 +263,7 @@ class _PropertyDetailsPageState extends ConsumerState<PropertyDetailsPage> {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator(color: lettingRed)),
-        error: (_, __) => const Text('Unable to load similar properties', style: TextStyle(color: Colors.white54)),
+        error: (_, _) => const Text('Unable to load similar properties', style: TextStyle(color: Colors.white54)),
       ),
     );
   }
