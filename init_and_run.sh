@@ -42,8 +42,8 @@ fi
 echo -e "\n${BLUE}[3/4] Verifying Configuration...${NC}"
 if [ ! -f .env ]; then
     echo -e "${YELLOW}! .env file not found. Creating a template...${NC}"
-    echo "SUPABASE_URL=https://akbesavhjjlltqehhgrw.supabase.co" > .env
-    echo "SUPABASE_ANON_KEY=REPLACE_WITH_YOUR_ANON_KEY" >> .env
+    echo "SUPABASE_URL=https://your-project.supabase.co" > .env
+    echo "SUPABASE_ANON_KEY=your-anon-key-here" >> .env
     echo -e "${YELLOW}! Please ensure your Supabase keys are correct in the .env file.${NC}"
 else
     echo -e "${GREEN}✔ .env file detected.${NC}"

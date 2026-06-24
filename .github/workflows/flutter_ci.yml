@@ -2,24 +2,41 @@ name: flutter-production-build
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
 jobs:
   build:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: stable
+
+      - name: Create .env from secrets
+        run: |
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env
+
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test
-      - run: flutter build appbundle --release
-      - run: flutter build ipa --release
+
+      - name: Build Android App Bundle
+        run: flutter build appbundle --release
+
+      - name: Build iOS IPA (no-codesign for CI)
+        run: flutter build ipa --release --no-codesign
+
       - uses: actions/upload-artifact@v4
         with:
           name: android-aab
           path: build/app/outputs/bundle/release/*.aab
+
       - uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
           path: build/ios/ipa/*.ipa
+
