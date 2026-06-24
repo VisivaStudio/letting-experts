@@ -79,3 +79,10 @@ android/local.properties
 android/**/*.keystore
 android/**/*.jks
 local.properties
+
+# Signing & certificates (NEVER commit)
+*.p12
+*.cer
+*.mobileprovision
+key.properties
+release.keystore

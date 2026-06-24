@@ -55,12 +55,24 @@ Letting Experts automates the process of handling property enquiries:
 
 Create a `.env` file based on `.env.example`:
 
-```
-SUPABASE_URL=your_supabase_url
-SUPABASE_ANON_KEY=your_supabase_anon_key
+```bash
+cp .env.example .env
 ```
 
-**Never commit the `.env` file to version control.**
+Then edit `.env` and fill in your actual credentials:
+
+| Variable | Description | Where to find it |
+|---|---|---|
+| `SUPABASE_URL` | Your Supabase project URL | Supabase Dashboard → Settings → API |
+| `SUPABASE_ANON_KEY` | Your Supabase anonymous key | Supabase Dashboard → Settings → API |
+| `GOOGLE_CALENDAR_API_KEY` | Google Calendar API key (optional) | Google Cloud Console → Credentials |
+| `OUTLOOK_CLIENT_ID` | Microsoft OAuth client ID (optional) | Azure Portal → App registrations |
+| `WHATSAPP_BUSINESS_API_TOKEN` | WhatsApp Business API token (optional) | Meta Developer Portal |
+| `WHATSAPP_BUSINESS_ACCOUNT_ID` | WhatsApp Business Account ID (optional) | Meta Developer Portal |
+| `EMAIL_PROVIDER_KEY` | Email provider API key (optional) | Your email provider dashboard |
+| `SENTRY_DSN` | Sentry DSN for crash reporting (optional) | Sentry → Project Settings |
+
+**Never commit the `.env` file to version control.** It is listed in `.gitignore`.
 
 ## 📁 Project Structure
 
@@ -103,12 +115,63 @@ flutter build apk --release
 flutter build appbundle --release
 ```
 
-## 🔐 Security
+## 🔐 Security & Secret Management
 
-- Store sensitive credentials in GitHub Secrets for CI/CD
-- Never commit `.env` files or signing keys
-- Review privacy policies for all integrated services
-- Use HTTPS for all API communication
+### CI/CD Secrets (GitHub Actions)
+
+The CI workflow reads credentials from GitHub repository secrets. Set the following secrets in your repository under **Settings → Secrets and variables → Actions**:
+
+| Secret | Description |
+|---|---|
+| `SUPABASE_URL` | Your Supabase project URL |
+| `SUPABASE_ANON_KEY` | Your Supabase anonymous API key |
+
+Do **not** hard-code these values in any script, workflow file, or source code.
+
+### Android Signing Setup
+
+For production Android builds:
+
+1. Generate a keystore:
+   ```bash
+   keytool -genkey -v -keystore release.keystore -alias release -keyalg RSA -keysize 2048 -validity 10000
+   ```
+2. Store `release.keystore` **outside** the repository (never commit it).
+3. Add these GitHub Secrets for CI signing:
+   - `ANDROID_KEYSTORE_BASE64` — Base64-encoded keystore file (`base64 -i release.keystore`)
+   - `ANDROID_KEY_ALIAS` — Key alias used above
+   - `ANDROID_KEY_PASSWORD` — Key password
+   - `ANDROID_STORE_PASSWORD` — Keystore password
+4. Reference `android/key.properties` (gitignored) locally:
+   ```
+   storePassword=<your-store-password>
+   keyPassword=<your-key-password>
+   keyAlias=release
+   storeFile=../../release.keystore
+   ```
+
+`.keystore` and `.jks` files are already listed in `.gitignore`.
+
+### iOS Signing Setup
+
+For production iOS builds:
+
+1. Export your distribution certificate and provisioning profile from Xcode or Apple Developer Portal.
+2. Store them **outside** the repository (never commit `.p12`, `.cer`, or `.mobileprovision` files).
+3. For CI, use [Fastlane Match](https://docs.fastlane.tools/actions/match/) or add these GitHub Secrets:
+   - `IOS_CERTIFICATE_BASE64` — Base64-encoded `.p12` distribution certificate
+   - `IOS_CERTIFICATE_PASSWORD` — Certificate password
+   - `IOS_PROVISIONING_PROFILE_BASE64` — Base64-encoded `.mobileprovision` file
+4. For local development, manage certificates via **Xcode → Settings → Accounts → Manage Certificates**.
+
+The CI workflow uses `--no-codesign` for build validation. Apply signing only in a dedicated release workflow using the secrets above.
+
+### General Rules
+
+- Never commit `.env`, signing keys, API tokens, or certificates to version control.
+- Rotate any credentials that were accidentally exposed.
+- Review privacy policies for all integrated third-party services.
+- Use HTTPS for all API communication.
 
 ## 📦 Dependencies
 
