@@ -68,14 +68,34 @@ Thumbs.db
 .LSOverride
 
 # Xcode user-specific files
-ios/**/*.pbxuser
-ios/**/*.perspectivev3
-ios/**/*.xcworkspace/xcuserdata/
-ios/**/*.xcworkspace/Previews/
+**/*.pbxuser
+**/*.perspectivev3
+**/*.xcworkspace/xcuserdata/
+**/*.xcworkspace/Previews/
 ios/Pods/
+macos/Pods/
+**/xcshareddata/WorkspaceSettings.xcsettings
+**/xcshareddata/IDEWorkspaceChecks.plist
 
 # Android user-specific files
 android/local.properties
 android/**/*.keystore
 android/**/*.jks
 local.properties
+
+# Windows generated Flutter files
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugin_registrant.h
+windows/flutter/generated_plugins.cmake
+
+# macOS generated Flutter files
+macos/Flutter/GeneratedPluginRegistrant.swift
+
+# Supabase CLI cache (may contain sensitive project info)
+supabase/.temp/
+
+# IDE run configurations
+.run/
+
+# Source archives at the repo root (should not be committed)
+/*.zip
