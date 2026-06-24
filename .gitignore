@@ -73,9 +73,20 @@ ios/**/*.perspectivev3
 ios/**/*.xcworkspace/xcuserdata/
 ios/**/*.xcworkspace/Previews/
 ios/Pods/
+ios/**/xcshareddata/WorkspaceSettings.xcsettings
+ios/**/xcshareddata/IDEWorkspaceChecks.plist
+macos/**/xcshareddata/WorkspaceSettings.xcsettings
+macos/**/xcshareddata/IDEWorkspaceChecks.plist
+
+# iOS/macOS CocoaPods generated lock file
+ios/Podfile.lock
+macos/Podfile.lock
 
 # Android user-specific files
 android/local.properties
 android/**/*.keystore
 android/**/*.jks
 local.properties
+
+# Large binary archives
+*.zip
