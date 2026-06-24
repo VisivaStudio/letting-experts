@@ -5,8 +5,6 @@
 # Xcode-related
 **/dgph
 **/xcuserdata/
-```ignore
 DerivedData/
 *.moved-aside
 *.xcuserstate
-```
