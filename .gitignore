@@ -72,6 +72,8 @@ ios/**/*.pbxuser
 ios/**/*.perspectivev3
 ios/**/*.xcworkspace/xcuserdata/
 ios/**/*.xcworkspace/Previews/
+**/*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+**/DerivedData/
 ios/Pods/
 
 # Android user-specific files
@@ -79,3 +81,8 @@ android/local.properties
 android/**/*.keystore
 android/**/*.jks
 local.properties
+
+# Local generated/temp artifacts
+supabase/.temp/
+letting_experts_source_final.zip
+letting_experts
