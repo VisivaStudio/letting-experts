@@ -40,3 +40,24 @@ jobs:
           name: ios-ipa
           path: build/ios/ipa/*.ipa
 
+      # --- Android Deployment to Google Play ---
+      - name: Deploy to Google Play (Production)
+        if: github.ref == 'refs/heads/main'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}
+          packageName: com.yourcompany.yourapp
+          releaseFiles: build/app/outputs/bundle/release/*.aab
+          track: production
+          status: completed
+
+      # --- iOS Deployment to TestFlight ---
+      - name: Deploy to TestFlight
+        if: github.ref == 'refs/heads/main'
+        uses: apple-actions/upload-testflight@v1
+        with:
+          app-path: build/ios/ipa/*.ipa
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+
