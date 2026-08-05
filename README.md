@@ -173,6 +173,25 @@ The CI workflow uses `--no-codesign` for build validation. Apply signing only in
 - Review privacy policies for all integrated third-party services.
 - Use HTTPS for all API communication.
 
+### Dependency and Audit Workflow
+
+This repository is Flutter-first and does not include a Node `package.json`, so dependency upgrades and audits are performed with Flutter/native tooling:
+
+```bash
+# Dart/Flutter dependencies
+flutter pub get
+flutter pub outdated
+flutter pub upgrade --major-versions
+
+# Validate project health
+flutter analyze
+flutter test
+
+# Native dependency refresh
+cd ios && pod repo update && pod install && cd ..
+cd macos && pod repo update && pod install && cd ..
+```
+
 ## 📦 Dependencies
 
 Key dependencies managed in `pubspec.yaml`:
